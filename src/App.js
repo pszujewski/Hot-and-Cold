@@ -8,22 +8,39 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      guesses: [3, 5, 22, 60, 11],
-      totalNum: 0,
-      messages: [
-        'Hot', 'Cold', 'Less than warm', 'Kinda hot'
-      ]
+      guesses: [],
+      secretNum: Math.floor(Math.random()*101),
+      isWon: false
     };
   }
+
+  addGuess(num) {
+    this.setState({
+      guesses: [...this.state.guesses, num]
+    });
+  }
+
+ toggleIsWon() {
+   const toggle = this.state.isWon ? false : true;
+   this.setState({
+      isWon: toggle
+    });
+ }
+
+ doNewGame() {
+   this.setState({
+      guesses: [],
+      secretNum: Math.floor(Math.random()*101),
+      isWon: false
+    });
+ }
+
   render() {
     return (
-      <div>
-        <Navbar />
-        <Container {...this.state}/>
-
+      <div className='app-container'>
+        <Navbar doNewGame={() => this.doNewGame()} />
+        <Container {...this.state} addGuess={(num) => this.addGuess(num)} toggleIsWon={() => this.toggleIsWon()} />
       </div>
     );
   }
 }
-
-// message={this.state.messages[0]} {...this.state.totalNum} guesses={this.state.guesses}/>
